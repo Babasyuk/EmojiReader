@@ -18,9 +18,21 @@ class EmojiTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Emoji Reader"
-        self.navigationItem.leftBarButtonItem = self.editButtonItem
+        navigationItem.leftBarButtonItem = self.editButtonItem
     }
 
+    @IBAction func unwindSegue(for segue: UIStoryboardSegue) {
+        guard let newEmojiTVC = segue.source as? NewEmojiTableViewController else { return }
+        var emoji = Emoji(name: "", emoji: "", description: "", isFavorite: false)
+        emoji.name = newEmojiTVC.nameTextField.text ?? ""
+        emoji.emoji = newEmojiTVC.emojiTextField.text ?? ""
+        emoji.description = newEmojiTVC.descriptionTextField.text ?? ""
+        emojies.append(emoji)
+        tableView.reloadData()
+    }
+}
+
+extension EmojiTableViewController {
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -56,6 +68,8 @@ class EmojiTableViewController: UITableViewController {
         let favorite = faivoriteAction(at: indexPath)
         return UISwipeActionsConfiguration(actions: [done, favorite])
     }
+    
+    
     
     private func doneAction(at index: IndexPath) -> UIContextualAction {
         let doneAction = UIContextualAction(style: .destructive, title: "Done") { [self] _, _, isDone in

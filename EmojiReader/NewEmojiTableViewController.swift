@@ -26,6 +26,11 @@ class NewEmojiTableViewController: UITableViewController {
             )
         }
     }
+
+    @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true)
+    }
+    
     
     @objc private func descriptionTextFieldDidChanged() {
         let emojiTF = emojiTextField.text ?? ""
