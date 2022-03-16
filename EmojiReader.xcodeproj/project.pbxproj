@@ -15,6 +15,7 @@
 		0660590827DF938F009E8A03 /* EmojiTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0660590727DF938F009E8A03 /* EmojiTableViewController.swift */; };
 		0660590A27DF9D47009E8A03 /* EmojiTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0660590927DF9D47009E8A03 /* EmojiTableViewCell.swift */; };
 		0660590C27DFA168009E8A03 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0660590B27DFA167009E8A03 /* Emoji.swift */; };
+		0660591027E2548A009E8A03 /* NewEmojiTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0660590F27E2548A009E8A03 /* NewEmojiTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		0660590727DF938F009E8A03 /* EmojiTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTableViewController.swift; sourceTree = "<group>"; };
 		0660590927DF9D47009E8A03 /* EmojiTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiTableViewCell.swift; sourceTree = "<group>"; };
 		0660590B27DFA167009E8A03 /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
+		0660590F27E2548A009E8A03 /* NewEmojiTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEmojiTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 				066058F527DF9244009E8A03 /* SceneDelegate.swift */,
 				0660590727DF938F009E8A03 /* EmojiTableViewController.swift */,
 				0660590927DF9D47009E8A03 /* EmojiTableViewCell.swift */,
+				0660590F27E2548A009E8A03 /* NewEmojiTableViewController.swift */,
 				0660590B27DFA167009E8A03 /* Emoji.swift */,
 				066058F927DF9244009E8A03 /* Main.storyboard */,
 				066058FC27DF9244009E8A03 /* Assets.xcassets */,
@@ -145,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0660590C27DFA168009E8A03 /* Emoji.swift in Sources */,
+				0660591027E2548A009E8A03 /* NewEmojiTableViewController.swift in Sources */,
 				066058F427DF9244009E8A03 /* AppDelegate.swift in Sources */,
 				0660590827DF938F009E8A03 /* EmojiTableViewController.swift in Sources */,
 				0660590A27DF9D47009E8A03 /* EmojiTableViewCell.swift in Sources */,
