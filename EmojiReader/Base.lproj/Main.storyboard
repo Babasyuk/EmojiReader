@@ -73,7 +73,7 @@
                     <navigationItem key="navigationItem" title="Root View Controller" id="lFX-2m-pyf">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ucu-0a-x7r">
                             <connections>
-                                <segue destination="ZEO-aa-DLr" kind="show" id="T2B-IY-TVY"/>
+                                <segue destination="ZEO-aa-DLr" kind="show" identifier="showNewEmoji" id="T2B-IY-TVY"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

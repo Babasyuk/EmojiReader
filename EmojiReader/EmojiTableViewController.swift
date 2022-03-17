@@ -20,6 +20,12 @@ class EmojiTableViewController: UITableViewController {
         title = "Emoji Reader"
         navigationItem.leftBarButtonItem = self.editButtonItem
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let navController = segue.destination as? UINavigationController else { return }
+        let newEmojiTVC = navController.topViewController as! NewEmojiTableViewController
+        newEmojiTVC.emoji = sender as? Emoji
+    }
 
     @IBAction func unwindSegue(for segue: UIStoryboardSegue) {
         guard let newEmojiTVC = segue.source as? NewEmojiTableViewController else { return }
@@ -49,6 +55,11 @@ extension EmojiTableViewController {
     }
     
     // MARK: - Table view delegate
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let emoji = emojies[indexPath.row]
+        performSegue(withIdentifier: "showNewEmoji", sender: emoji)
+    }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {

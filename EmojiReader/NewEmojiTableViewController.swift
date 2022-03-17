@@ -14,15 +14,23 @@ class NewEmojiTableViewController: UITableViewController {
     
     @IBOutlet weak var saveButton: UIBarButtonItem!
     
+    var emoji: Emoji?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         saveButton.isEnabled = false
+        
+        emojiTextField.text = emoji?.emoji
+        nameTextField.text = emoji?.name
+        descriptionTextField.text = emoji?.description
+        
+        emojiTextField.becomeFirstResponder()
         
         for textField in [emojiTextField, nameTextField, descriptionTextField] {
             textField?.addTarget(
                 self,
                 action: #selector(descriptionTextFieldDidChanged),
-                for: .editingChanged
+                for: .allEvents
             )
         }
     }
