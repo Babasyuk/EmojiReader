@@ -11,10 +11,12 @@ class EmojiTableViewCell: UITableViewCell {
     @IBOutlet weak var emojiLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var desctiptionLabel: UILabel!
+    @IBOutlet weak var favoriteLabel: UILabel!
     
-    func setEmoji(object: Emoji) {
-        emojiLabel.text = object.emoji
-        nameLabel.text = object.name
-        desctiptionLabel.text = object.description
+    func setEmoji(_ emodji: Emoji) {
+        emojiLabel.text = String(emodji.emoji)
+        nameLabel.text = emodji.name
+        desctiptionLabel.text = emodji.description
+        favoriteLabel.isHidden = !emodji.isFavorite
     }
 }

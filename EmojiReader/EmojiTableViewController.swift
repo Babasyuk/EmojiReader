@@ -9,33 +9,45 @@ import UIKit
 
 class EmojiTableViewController: UITableViewController {
     
-    private var emojies = [
-        Emoji(name: "Smile", emoji: "😄", description: "Keep smiling every day", isFavorite: false),
-        Emoji(name: "Footboll", emoji: "⚽️", description: "Let's play footboll", isFavorite: false),
-        Emoji(name: "Love", emoji: "🥰", description: "Love is everywhere", isFavorite: false),
-    ]
+    private var emojies = Emoji.getEmoji()
+    private var isEvent = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Emoji Reader"
-        navigationItem.leftBarButtonItem = self.editButtonItem
+        navigationItem.leftBarButtonItem = editButtonItem
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let navController = segue.destination as? UINavigationController else { return }
-        let newEmojiTVC = navController.topViewController as! NewEmojiTableViewController
+        guard let newEmojiTVC = navController.topViewController as? NewEmojiTableViewController else { return }
         newEmojiTVC.emoji = sender as? Emoji
     }
 
+    // MARK: - IBAction
+    
+    @IBAction func addNewEmojiButton(_ sender: UIBarButtonItem) {
+        isEvent = true
+        performSegue(withIdentifier: "showNewEmoji", sender: nil)
+    }
+    
     @IBAction func unwindSegue(for segue: UIStoryboardSegue) {
         guard let newEmojiTVC = segue.source as? NewEmojiTableViewController else { return }
-        var emoji = Emoji(name: "", emoji: "", description: "", isFavorite: false)
-        emoji.name = newEmojiTVC.nameTextField.text ?? ""
-        emoji.emoji = newEmojiTVC.emojiTextField.text ?? ""
-        emoji.description = newEmojiTVC.descriptionTextField.text ?? ""
-        emojies.append(emoji)
+        
+        let emoji = Emoji(name: newEmojiTVC.nameTextField.text ?? "",
+                          emoji: Character(newEmojiTVC.emojiTextField.text ?? ""),
+                          description:  newEmojiTVC.descriptionTextField.text ?? "",
+                          isFavorite: false)
+        
+        if isEvent {
+            emojies.append(emoji)
+        } else {
+            guard let index = tableView.indexPathForSelectedRow else { return }
+            emojies[index.row] = emoji
+        }
         tableView.reloadData()
     }
+    
 }
 
 extension EmojiTableViewController {
@@ -47,9 +59,11 @@ extension EmojiTableViewController {
 
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! EmojiTableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? EmojiTableViewCell
+        else { return UITableViewCell()}
+        
         let emoji = emojies[indexPath.row]
-        cell.setEmoji(object: emoji)
+        cell.setEmoji(emoji)
 
         return cell
     }
@@ -57,6 +71,7 @@ extension EmojiTableViewController {
     // MARK: - Table view delegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        isEvent = false
         let emoji = emojies[indexPath.row]
         performSegue(withIdentifier: "showNewEmoji", sender: emoji)
     }
@@ -75,36 +90,24 @@ extension EmojiTableViewController {
     }
     
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let done = doneAction(at: indexPath)
         let favorite = faivoriteAction(at: indexPath)
-        return UISwipeActionsConfiguration(actions: [done, favorite])
-    }
-    
-    
-    
-    private func doneAction(at index: IndexPath) -> UIContextualAction {
-        let doneAction = UIContextualAction(style: .destructive, title: "Done") { [self] _, _, isDone in
-            self.emojies.remove(at: index.row)
-            self.tableView.deleteRows(at: [index], with: .fade)
-            isDone(true)
-        }
-        
-        doneAction.backgroundColor = .systemBlue
-        doneAction.image = UIImage(systemName: "circle")
-        return doneAction
+        return UISwipeActionsConfiguration(actions: [favorite])
     }
     
     private func faivoriteAction(at index: IndexPath) -> UIContextualAction {
         var emoji = emojies[index.row]
-        let faivorite = UIContextualAction(style: .normal, title: "Favorite") { _, _, isDone in
+        let favorite = UIContextualAction(style: .normal, title: "Favorite") { _, _, isDone in
             emoji.isFavorite.toggle()
             self.emojies[index.row] = emoji
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.tableView.reloadData()
+            }
             isDone(true)
         }
         
-        faivorite.backgroundColor = emoji.isFavorite ? .systemPink : .systemYellow
-        faivorite.image = UIImage(systemName: "heart.fill")
+        favorite.backgroundColor = emoji.isFavorite ? .systemPink : .systemYellow
+        favorite.image = UIImage(systemName: "heart.fill")
         
-        return faivorite
+        return favorite
     }
 }

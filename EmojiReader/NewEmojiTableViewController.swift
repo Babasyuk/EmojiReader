@@ -20,19 +20,15 @@ class NewEmojiTableViewController: UITableViewController {
         super.viewDidLoad()
         saveButton.isEnabled = false
         
-        emojiTextField.text = emoji?.emoji
-        nameTextField.text = emoji?.name
-        descriptionTextField.text = emoji?.description
+        if let emoji = emoji {
+            emojiTextField.text = String(emoji.emoji)
+            nameTextField.text = emoji.name
+            descriptionTextField.text = emoji.description
+        }
         
         emojiTextField.becomeFirstResponder()
         
-        for textField in [emojiTextField, nameTextField, descriptionTextField] {
-            textField?.addTarget(
-                self,
-                action: #selector(descriptionTextFieldDidChanged),
-                for: .allEvents
-            )
-        }
+        addTargetForTF()
     }
 
     @IBAction func cancelButtonPressed(_ sender: UIBarButtonItem) {
@@ -40,7 +36,11 @@ class NewEmojiTableViewController: UITableViewController {
     }
     
     
-    @objc private func descriptionTextFieldDidChanged() {
+    @objc private func setActivityForSaveButton() {
+        if emojiTextField.text?.count != 1 {
+            emojiTextField.text = ""
+        }
+        
         let emojiTF = emojiTextField.text ?? ""
         let nameTF = nameTextField.text ?? ""
         let descriptionTF = descriptionTextField.text ?? ""
@@ -48,14 +48,26 @@ class NewEmojiTableViewController: UITableViewController {
         saveButton.isEnabled = !emojiTF.isEmpty && !nameTF.isEmpty && !descriptionTF.isEmpty
     }
     
+    private func addTargetForTF() {
+        for textField in [emojiTextField, nameTextField, descriptionTextField] {
+            textField?.addTarget(
+                self,
+                action: #selector(setActivityForSaveButton),
+                for: .editingChanged
+            )
+        }
+    }
 }
 
 extension NewEmojiTableViewController: UITextFieldDelegate {
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emojiTextField {
             nameTextField.becomeFirstResponder()
         } else if textField == nameTextField {
             descriptionTextField.becomeFirstResponder()
+        } else {
+            view.endEditing(true)
         }
         return true
     }
