@@ -11,6 +11,7 @@ class EmojiTableViewController: UITableViewController {
     
     private var emojies = Emoji.getEmoji()
     private var isEvent = true
+    private var index = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,8 +43,7 @@ class EmojiTableViewController: UITableViewController {
         if isEvent {
             emojies.append(emoji)
         } else {
-            guard let index = tableView.indexPathForSelectedRow else { return }
-            emojies[index.row] = emoji
+            emojies[index] = emoji
         }
         tableView.reloadData()
     }
@@ -56,7 +56,6 @@ extension EmojiTableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         emojies.count
     }
-
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? EmojiTableViewCell
@@ -72,6 +71,7 @@ extension EmojiTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        index = indexPath.row
         isEvent = false
         let emoji = emojies[indexPath.row]
         performSegue(withIdentifier: "showNewEmoji", sender: emoji)
