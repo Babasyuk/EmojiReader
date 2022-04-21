@@ -71,6 +71,7 @@ extension EmojiTableViewController {
     // MARK: - Table view delegate
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         isEvent = false
         let emoji = emojies[indexPath.row]
         performSegue(withIdentifier: "showNewEmoji", sender: emoji)
